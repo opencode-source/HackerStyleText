@@ -1,0 +1,94 @@
+<html lang="en">
+<head>
+    <title>Hacker Style Text - OpenCode</title>
+    <style>
+
+        body {
+            background: #111;
+            color: #411;
+            font-family: consolas, courier, monospace;
+            font-size: 60px;
+            text-shadow: 0 0 15px #411;
+            height: 100%;
+        }
+
+        div {
+            position: relative;
+            top: 50%;
+            margin: -30px auto;
+            text-align: center;
+        }
+
+        .glow {
+            color: #f00;
+            text-shadow: 0px 0px 10px #f00;
+        }
+
+        span {
+            display: inline-block;
+            padding: 0 10px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="text">YOU HACKED...</div>
+
+    <script>
+
+        const alphabet = [
+            "A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
+            "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
+            "U", "V", "W", "X", "Y", "Z", "1", "2", "3", "4",
+            "5", "6", "7", "8", "9", "0"
+        ];
+
+        let letter_count = 0
+        const el = document.querySelector('#text')
+        const word = el.innerHTML.trim()
+        let finished = false
+
+        el.innerHTML = ""
+        for(let i=0; i<word.length; i++){
+            const span = document.createElement("span")
+            span.textContent = word.charAt(i)
+            el.appendChild(span)
+        }
+
+        setTimeout(write, 75)
+        const incrementer = setTimeout(inc, 1000)
+
+        function write() {
+            for(let i= letter_count; i< word.length; i++) {
+                const c = Math.floor(Math.random() * 36)
+                el.querySelectorAll("span")[i].textContent = alphabet[c]
+            }
+            if(!finished)
+                setTimeout(write, 75)
+        }
+
+        function inc() {
+            const spans = el.querySelectorAll("span")
+            spans[letter_count].textContent = word[letter_count]
+            spans[letter_count].classList.add("glow")
+            letter_count++
+            if(letter_count >= word.length){
+                finished = true
+                setTimeout(reset, 1500)
+            } else {
+                setTimeout(inc, 1000)
+            }
+        }
+        
+        function reset() {
+            letter_count = 0
+            finished = false
+            setTimeout(inc, 1000)
+            setTimeout(write, 75)
+            const spans = el.querySelectorAll("span")
+            spans.forEach(span => span.classList.remove("glow"))
+        }
+
+    </script>
+</body>
+</html>
